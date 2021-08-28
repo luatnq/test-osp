@@ -1,6 +1,7 @@
 package com.osp.testwebservice.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -15,9 +16,10 @@ public class LicInfoNetworkType implements Serializable {
     @Column(name = "lic_cnp_id")
     private Integer id;
 
-    @OneToOne
+    @OneToOne(mappedBy = "licInfoNetworkType")
     @MapsId
     @JoinColumn(name = "lic_cnp_id")
+    @JsonIgnore
     private LicInfo licInfo;
 
     @ManyToOne(fetch = FetchType.LAZY)

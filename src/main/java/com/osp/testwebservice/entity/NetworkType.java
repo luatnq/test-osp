@@ -1,10 +1,12 @@
 package com.osp.testwebservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -20,7 +22,7 @@ public class NetworkType implements Serializable {
     private String createdBy;
 
     @Column(name = "created_time")
-    private Instant createdTime;
+    private Date createdTime;
 
     @Column(name = "description")
     private String description;
@@ -32,8 +34,8 @@ public class NetworkType implements Serializable {
     @JoinColumn(name = "parent_id", nullable = false)
     private NetworkType networkType;
 
-    @OneToMany(mappedBy = "networkType")
-    private List<NetworkType> networkTypes;
+//    @OneToMany(mappedBy = "networkType")
+//    private List<NetworkType> networkTypes;
 
     @Column(name = "order_no")
     private int orderNo;

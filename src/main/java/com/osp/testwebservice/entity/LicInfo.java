@@ -1,8 +1,11 @@
 package com.osp.testwebservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -23,7 +26,7 @@ public class LicInfo implements Serializable {
     private String createdBy;
 
     @Column(name = "created_time")
-    private Instant createdTime;
+    private Date createdTime;
 
     @Column(name = "effect_date")
     private String effectDate;
@@ -37,7 +40,8 @@ public class LicInfo implements Serializable {
     @Column(name = "lic_number")
     private String licNumber;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
+    @LazyToOne(LazyToOneOption.NO_PROXY)
     @JoinColumn(name = "company_id", nullable = false)
     private Company company;
 
@@ -45,10 +49,10 @@ public class LicInfo implements Serializable {
     @JoinColumn(name = "parent_id", nullable = true)
     private LicInfo licInfo;
 
-    @OneToMany(mappedBy = "licInfo")
-    private List<LicInfo> licInfos;
+//    @OneToMany(fetch = FetchType.LAZY,mappedBy = "licInfo")
+//    private List<LicInfo> licInfos;
 
-    @OneToOne(mappedBy = "licInfo", cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private LicInfoNetworkType licInfoNetworkType;
 }

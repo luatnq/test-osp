@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface CompanyRepository extends JpaRepository<Company, Integer> {
-    List<Company> getCompanyByIdIn(List<Integer> ids);
+    Company getCompanyById(Integer id);
 }

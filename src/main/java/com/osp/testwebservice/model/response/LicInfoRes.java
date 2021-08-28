@@ -1,12 +1,13 @@
-package com.osp.testwebservice.model;
+package com.osp.testwebservice.model.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.io.Serializable;
 
 @Data
-public class LicInfo implements Serializable {
+public class LicInfoRes implements Serializable {
     @JsonProperty("lic_number")
     private String licNumber;
 
@@ -14,5 +15,8 @@ public class LicInfo implements Serializable {
     private String licNetworkType;
 
     @JsonProperty("revenue")
-    private String revenue;
+    private Integer revenue;
+
+    @JsonIgnore
+    private Boolean active;
 }

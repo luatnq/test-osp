@@ -1,5 +1,6 @@
 package com.osp.testwebservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -7,6 +8,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -22,7 +24,7 @@ public class Company implements Serializable {
     private String createdBy;
 
     @Column(name = "created_time")
-    private Instant createdTime;
+    private Date createdTime;
 
     @Column(name = "address")
     private String address;
@@ -57,6 +59,7 @@ public class Company implements Serializable {
     @Column(name = "website")
     private String website;
 
-    @OneToMany(mappedBy = "company")
-    private List<LicInfo> licInfos;
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "company")
+//    private List<LicInfo> licInfos;
 }

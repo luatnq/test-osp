@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.Date;
 
 @Entity
 @Data
@@ -19,7 +20,7 @@ public class CpnRevenue implements Serializable {
     private String createdBy;
 
     @Column(name = "created_time")
-    private Instant createdTime;
+    private Date createdTime;
 
     @Column(name = "last_modified_by")
     private String lastModifiedBy;

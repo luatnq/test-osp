@@ -1,7 +1,6 @@
 package com.osp.testwebservice.model.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.osp.testwebservice.model.LicInfo;
 import com.osp.testwebservice.model.TelcoPeriod;
 import lombok.Data;
 
@@ -10,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-public class ResponseDTO implements Serializable {
+public class CompanyInfoDTO implements Serializable {
 
     @JsonProperty("company_id")
     private Integer companyId;
@@ -28,5 +27,5 @@ public class ResponseDTO implements Serializable {
     private Date infoDate;
 
     @JsonProperty("lic_infos")
-    private List<LicInfo> licInfos;
+    private List<LicInfoRes> licInfoRes;
 }
