@@ -31,13 +31,17 @@ public class LicInfoServiceImpl implements LicInfoService {
         for (LicInfo t: licInfos) {
             LicInfoRes licInfoRes = new LicInfoRes();
             licInfoRes.setLicNumber(t.getLicNumber());
-            licInfoRes.setLicNetworkType(t.getLicInfoNetworkType().getNetworkType().getName());
+            licInfoRes.setLicNetworkType(t.getLicInfoNetworkType().getNetworkType().getAlias());
             licInfoRes.setRevenue(cpnRevenue.getRevenue());
             licInfoResList.add(licInfoRes);
         }
         return licInfoResList;
     }
 
+    @Override
+    public List<LicInfo> saveAllLicInfo(List<LicInfo> licInfos){
+        return licInfoRepository.saveAll(licInfos);
+    }
     private List<LicInfo> getLicInfosByCpnId(Integer id, Date date){
         List<LicInfo> licInfos = licInfoRepository.getLicInfos(id, date);
         return licInfos;

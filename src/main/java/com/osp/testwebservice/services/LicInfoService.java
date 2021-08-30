@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface LicInfoService {
     List<LicInfoRes> getLicInfoRes(int companyId, long year, int quarter, String type, Date date);
+    List<LicInfo> saveAllLicInfo(List<LicInfo> licInfos);
 }

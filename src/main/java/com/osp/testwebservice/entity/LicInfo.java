@@ -1,21 +1,21 @@
 package com.osp.testwebservice.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Date;
 import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 @Entity
 @Data
 @Table(name = "LIC_INFO")
+@AllArgsConstructor
+@NoArgsConstructor
 public class LicInfo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,13 +29,13 @@ public class LicInfo implements Serializable {
     private Date createdTime;
 
     @Column(name = "effect_date")
-    private String effectDate;
+    private Date effectDate;
 
     @Column(name = "expired_date")
-    private String expiredDate;
+    private Date expiredDate;
 
     @Column(name = "expired_time")
-    private String expiredTime;
+    private Date expiredTime;
 
     @Column(name = "lic_number")
     private String licNumber;
@@ -49,10 +49,15 @@ public class LicInfo implements Serializable {
     @JoinColumn(name = "parent_id", nullable = true)
     private LicInfo licInfo;
 
-//    @OneToMany(fetch = FetchType.LAZY,mappedBy = "licInfo")
-//    private List<LicInfo> licInfos;
-
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private LicInfoNetworkType licInfoNetworkType;
+
+    public LicInfo(Date fromDate, Date toDate, String licNumber , Company company){
+        this.createdTime = new Date();
+        this.effectDate = fromDate;
+        this.expiredDate = toDate;
+        this.licNumber = licNumber;
+        this.company = company;
+    }
 }

@@ -1,22 +1,25 @@
 package com.osp.testwebservice.services.impl;
 
 import com.osp.testwebservice.entity.Company;
+import com.osp.testwebservice.entity.LicInfo;
+import com.osp.testwebservice.entity.LicInfoNetworkType;
+import com.osp.testwebservice.entity.NetworkType;
+import com.osp.testwebservice.model.CompanyInfoItem;
 import com.osp.testwebservice.model.TelcoPeriod;
 import com.osp.testwebservice.model.request.RequestDTO;
 import com.osp.testwebservice.model.response.LicInfoRes;
 import com.osp.testwebservice.model.response.CompanyInfoDTO;
 import com.osp.testwebservice.model.response.PageRes;
 import com.osp.testwebservice.repository.CompanyRepository;
-import com.osp.testwebservice.services.CompanyService;
-import com.osp.testwebservice.services.CpnRevenueService;
-import com.osp.testwebservice.services.LicInfoService;
+import com.osp.testwebservice.services.*;
+import com.osp.testwebservice.utils.ReadXLSHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,6 +31,8 @@ public class CompanyServiceImpl implements CompanyService {
     private final CompanyRepository companyRepository;
     private final LicInfoService licInfoService;
     private final CpnRevenueService cpnRevenueService;
+    private final NetworkTypeService networkTypeService;
+    private final LicInfoNetworkService licInfoNetworkService;
 
     @Override
     public PageRes getCompanyInfo(int page, int size, RequestDTO requestDTO) throws ParseException {
@@ -37,7 +42,6 @@ public class CompanyServiceImpl implements CompanyService {
         int quarterReq = requestDTO.getQuarter();
         Date dateReq = requestDTO.getDate();
         List<Integer> companyIds = requestDTO.getCompanyIds();
-//        Date dateReq = requestDTO.getDate();
         List<CompanyInfoDTO> companyInfoDTOs = new ArrayList<>();
         List<CompanyInfoDTO> companyInfoDTOsRes = new ArrayList<>();
         TelcoPeriod telcoPeriod = new TelcoPeriod(typeReq, yearReq, quarterReq);
@@ -68,6 +72,29 @@ public class CompanyServiceImpl implements CompanyService {
         pageRes.setContent(companyInfoDTOsRes);
 
         return pageRes;
+    }
+
+    @Override
+    public Object importXls(MultipartFile file, int companyId) throws IOException, ParseException {
+
+        Company company = companyRepository.findById(companyId).orElse(null);
+
+        List<LicInfo> licInfos = new ArrayList<>();
+        List<LicInfoNetworkType> licInfoNetworkTypes = new ArrayList<>();
+        List<CompanyInfoItem> companyInfoItems = ReadXLSHelper.readXLSCompanyInfo(file.getInputStream(), companyId);
+        for (CompanyInfoItem item : companyInfoItems) {
+            if (item.getStt() >= 1) {
+                LicInfo licInfo = new LicInfo(item.getFromYear(), item.getToYear(), item.getLicNumber(), company);
+                licInfos.add(licInfo);
+                NetworkType networkType = networkTypeService.getNetworkType(item.getTypeLic());
+                LicInfoNetworkType licInfoNetworkType = new LicInfoNetworkType(licInfo, networkType);
+                licInfoNetworkTypes.add(licInfoNetworkType);
+            }
+        }
+        licInfoService.saveAllLicInfo(licInfos);
+        licInfoNetworkService.saveLicInfoNetworkTypes(licInfoNetworkTypes);
+
+        return companyInfoItems;
     }
 
     private CompanyInfoDTO buildCompanyInfo(Date date, Company company,

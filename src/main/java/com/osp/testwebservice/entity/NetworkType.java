@@ -34,8 +34,6 @@ public class NetworkType implements Serializable {
     @JoinColumn(name = "parent_id", nullable = false)
     private NetworkType networkType;
 
-//    @OneToMany(mappedBy = "networkType")
-//    private List<NetworkType> networkTypes;
 
     @Column(name = "order_no")
     private int orderNo;
