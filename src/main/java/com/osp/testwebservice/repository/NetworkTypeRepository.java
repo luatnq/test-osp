@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface NetworkTypeRepository extends JpaRepository<NetworkType, Integer> {
-    NetworkType getNetworkTypeByAlias(String alias);
+    Optional<NetworkType> getNetworkTypeByAlias(String alias);
 }

@@ -5,8 +5,11 @@ import com.osp.testwebservice.model.request.RequestDTO;
 import com.osp.testwebservice.model.response.PageRes;
 import com.osp.testwebservice.services.CompanyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.function.EntityResponse;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -17,17 +20,18 @@ import java.text.ParseException;
 public class CompanyController {
     private final CompanyService companyService;
 
-    @PostMapping(path = "search")
-    public PageRes getCompanies(@RequestParam("page") int page,
-                                @RequestParam("size") int size,
-                                @RequestBody RequestDTO requestDTO) throws ParseException {
-        return companyService.getCompanyInfo(page, size, requestDTO);
+    @PostMapping(path = "search-info")
+    public ResponseEntity<PageRes> getCompanies(@RequestParam("page") int page,
+                                                @RequestParam("size") int size,
+                                                @RequestBody RequestDTO requestDTO) throws ParseException {
+        PageRes pageRes = companyService.getCompanyInfo(page, size, requestDTO);
+        return new ResponseEntity <>(pageRes, HttpStatus.OK);
     }
 
-    @PostMapping(path = "upload")
-    public Object importXlsCompanyInfo(@RequestParam("company_id") Integer companyId,
+    @PostMapping(path = "upload-info")
+    public ResponseEntity<Object> importXlsCompanyInfo(@RequestParam("company_id") Integer companyId,
                                        @RequestParam("file") MultipartFile file) throws IOException, ParseException {
-        return companyService.importXls(file, companyId);
-
+        Object objRes = companyService.importXls(file, companyId);
+        return new ResponseEntity<>(objRes, HttpStatus.OK);
     }
 }

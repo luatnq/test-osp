@@ -23,12 +23,4 @@ public class PageRes implements Serializable {
     @JsonProperty("total")
     private long total;
 
-//    public PageRes(Page<? extends Object> page){
-//        this.content = page.getContent();
-//        this.pageSize = page.getContent().size();
-//        this.pageNumber = page.getNumber();
-//        this.totalPages = page.getTotalPages();
-//        this.total = page.getTotalElements();
-//    }
-
 }

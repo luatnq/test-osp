@@ -1,7 +1,6 @@
 package com.osp.testwebservice.services;
 
 import com.osp.testwebservice.model.request.RequestDTO;
-import com.osp.testwebservice.model.response.CompanyInfoDTO;
 import com.osp.testwebservice.model.response.PageRes;
 import org.springframework.web.multipart.MultipartFile;
 

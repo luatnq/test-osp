@@ -20,7 +20,7 @@ public class CpnRevenueServiceImpl implements CpnRevenueService {
     @Override
     public CpnRevenue getCpnRevenuesByCpnId(Date dateReq, Integer cpnIdReq, String typeReq, int quarterReq, long year) {
         CpnRevenue cpnRevenues = companyRevenueRepository.
-                getCpnRevenueByCompanyIdAndDate(cpnIdReq, dateReq, typeReq, quarterReq, year);
+                getCpnRevenueByCompanyIdAndDate(cpnIdReq, dateReq, typeReq, quarterReq, year).orElse(null);
         return cpnRevenues;
     }
 }

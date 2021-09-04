@@ -22,5 +22,5 @@ public class RequestDTO implements Serializable {
     private List<Integer> companyIds;
 
     @JsonProperty("date")
-    private Date date;
+    private String date;
 }

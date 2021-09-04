@@ -1,7 +1,8 @@
-package com.osp.testwebservice.model.response;
+package com.osp.testwebservice.model.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.osp.testwebservice.model.TelcoPeriod;
+import com.osp.testwebservice.model.response.LicInfoRes;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -22,6 +23,9 @@ public class CompanyInfoDTO implements Serializable {
 
     @JsonProperty("telco_period")
     private TelcoPeriod telcoPeriod;
+
+    @JsonProperty("status")
+    private String status;
 
     @JsonProperty("info_date")
     private Date infoDate;
