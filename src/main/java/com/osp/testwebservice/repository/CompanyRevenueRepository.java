@@ -16,9 +16,17 @@ public interface CompanyRevenueRepository extends JpaRepository<CpnRevenue, Inte
     @Query(value = "SELECT * FROM cpn_revenue WHERE company_id = :company_id  " +
             "AND TYPE = :inp_type  AND created_time = :inp_date " +
             "AND quarter = :inp_quarter AND year = :inp_year AND active = '1'", nativeQuery = true)
-    Optional<CpnRevenue> getCpnRevenueByCompanyIdAndDate(@Param("company_id") Integer companyIdReq,
-                                                        @Param("inp_date") Date dateReq,
-                                                        @Param("inp_type") String typeReq,
-                                                        @Param("inp_quarter") int quarterReq,
-                                                        @Param("inp_year") long year);
+    Optional<CpnRevenue> getCpnRevenueQuarter(@Param("company_id") Integer companyIdReq,
+                                              @Param("inp_date") Date dateReq,
+                                              @Param("inp_type") String typeReq,
+                                              @Param("inp_quarter") int quarterReq,
+                                              @Param("inp_year") long year);
+
+    @Query(value = "SELECT * FROM cpn_revenue WHERE company_id = :company_id  " +
+            "AND TYPE = :inp_type  AND created_time = :inp_date " +
+            "AND year = :inp_year AND active = '1'", nativeQuery = true)
+    Optional<CpnRevenue> getCpnRevenueYear(@Param("company_id") Integer companyIdReq,
+                                                         @Param("inp_date") Date dateReq,
+                                                         @Param("inp_type") String typeReq,
+                                                         @Param("inp_year") long year);
 }

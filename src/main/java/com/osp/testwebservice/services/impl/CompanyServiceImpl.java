@@ -6,10 +6,9 @@ import com.osp.testwebservice.entity.LicInfoNetworkType;
 import com.osp.testwebservice.entity.NetworkType;
 import com.osp.testwebservice.exception.CompanyNotFoundException;
 import com.osp.testwebservice.exception.MessageError;
-import com.osp.testwebservice.exception.NetworkTypeNotFound;
 import com.osp.testwebservice.model.CompanyInfoItem;
 import com.osp.testwebservice.model.TelcoPeriod;
-import com.osp.testwebservice.model.request.RequestDTO;
+import com.osp.testwebservice.model.request.RequestCompanyInfo;
 import com.osp.testwebservice.model.response.LicInfoRes;
 import com.osp.testwebservice.model.dtos.CompanyInfoDTO;
 import com.osp.testwebservice.model.response.PageRes;
@@ -27,7 +26,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -35,30 +33,30 @@ import java.util.Objects;
 public class CompanyServiceImpl implements CompanyService {
     private final CompanyRepository companyRepository;
     private final LicInfoService licInfoService;
-    private final CpnRevenueService cpnRevenueService;
     private final NetworkTypeService networkTypeService;
     private final LicInfoNetworkService licInfoNetworkService;
 
     private final String LIC_STATUS = "Đã nộp";
 
     @Override
-    public PageRes getCompanyInfo(int page, int size, RequestDTO requestDTO) throws ParseException {
+    public PageRes getCompanyInfo(int page, int size, RequestCompanyInfo requestCompanyInfo) throws ParseException {
         PageRes pageRes = new PageRes();
-        String typeReq = requestDTO.getType();
-        long yearReq = requestDTO.getYear();
-        int quarterReq = requestDTO.getQuarter();
-        Date dateReq = new SimpleDateFormat("yyyy-MM-dd").parse(requestDTO.getDate());
-        List<Integer> companyIds = requestDTO.getCompanyIds();
+        String typeReq = requestCompanyInfo.getType();
+        long yearReq = requestCompanyInfo.getYear();
+        int quarterReq = requestCompanyInfo.getQuarter();
+        Date dateReq = new SimpleDateFormat("yyyy-MM-dd").parse(requestCompanyInfo.getDate());
+        List<Integer> companyIds = requestCompanyInfo.getCompanyIds();
         List<CompanyInfoDTO> companyInfoDTOs = new ArrayList<>();
 
         TelcoPeriod telcoPeriod = new TelcoPeriod(typeReq, yearReq, quarterReq);
-        for (Integer id : companyIds) {
-            Company company = companyRepository.getCompanyById(id).orElse(null);
-            if (Objects.nonNull(company)) {
-                List<LicInfoRes> licInfoRes = licInfoService.getLicInfoRes(id, yearReq, quarterReq, typeReq, dateReq);
-                CompanyInfoDTO companyInfoDTO = this.buildCompanyInfo(dateReq, company, licInfoRes, telcoPeriod);
-                companyInfoDTOs.add(companyInfoDTO);
-            }
+        List<Company> companies = companyRepository.getCompanyByIdIn(companyIds);
+
+        for (Company company : companies) {
+            List<LicInfoRes> licInfoRes = licInfoService.getLicInfoRes(company.getId(), yearReq,
+                    quarterReq, typeReq, dateReq);
+            CompanyInfoDTO companyInfoDTO = this.buildCompanyInfo(dateReq, company,
+                    licInfoRes, telcoPeriod);
+            companyInfoDTOs.add(companyInfoDTO);
         }
         pageRes = this.buildPageRes(size, page, companyInfoDTOs);
         return pageRes;

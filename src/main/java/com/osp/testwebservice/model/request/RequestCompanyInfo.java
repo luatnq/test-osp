@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-public class RequestDTO implements Serializable {
+public class RequestCompanyInfo implements Serializable {
     @JsonProperty("type")
     private String type;
 

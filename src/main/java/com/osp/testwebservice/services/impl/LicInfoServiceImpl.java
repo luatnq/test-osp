@@ -2,9 +2,7 @@ package com.osp.testwebservice.services.impl;
 
 import com.osp.testwebservice.entity.CpnRevenue;
 import com.osp.testwebservice.entity.LicInfo;
-import com.osp.testwebservice.model.request.RequestDTO;
 import com.osp.testwebservice.model.response.LicInfoRes;
-import com.osp.testwebservice.repository.CompanyRevenueRepository;
 import com.osp.testwebservice.repository.LicInfoRepository;
 import com.osp.testwebservice.services.CpnRevenueService;
 import com.osp.testwebservice.services.LicInfoService;
